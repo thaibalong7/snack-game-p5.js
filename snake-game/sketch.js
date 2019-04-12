@@ -5,6 +5,8 @@ let food;
 let w;
 let h;
 let direction = 'right';
+let isEndGame = false;
+
 function setup() {
     // put setup code here
     createCanvas(400, 400);
@@ -13,6 +15,9 @@ function setup() {
     h = floor(height / rez);
     snake = new Snake();
     getFoodLocation();
+    // Set text characteristics
+    textFont("Georgia");
+    textAlign(CENTER, CENTER);
 }
 
 function getFoodLocation() {
@@ -48,14 +53,27 @@ function keyPressed() {
             direction = 'down'
         }
     }
+    else if (key === ' ') {
+        console.log('Restart game')
+        if (isEndGame === true) {
+            // rerender lại, restart trò chơi
+            background(220);
+            snake = new Snake();
+            loop();
+        }
+    }
 }
-function drawWords(x) {
+function drawWords(x, y) {
     // The text() function needs three parameters:
     // the text to draw, the horizontal position,
     // and the vertical position
-    fill(0);
-    text('GAME OVER', x, 80);
-  }
+    textSize(4);
+    fill(204, 0, 0);
+    text('GAME OVER', x, y);
+    fill(255, 80, 80);
+    textSize(2);
+    text('Press space to restart', x, y + 5);
+}
 
 function draw() {
     // put drawing code here
@@ -68,15 +86,15 @@ function draw() {
     snake.update(); //update lại vị trí các cục của con rắn
     snake.show(); //show những update lên
 
+    fill(255, 0, 255);
+    rect(food.x, food.y, 1, 1); //vẽ food
     if (snake.checkEndGame()) {
+        isEndGame = true;
         console.log('END GAME');
-        background(0, 0, 255);
-        textAlign(CENTER);
-        drawWords(width * 0.5);
+        background(119, 136, 153);
+        drawWords(width / 20, height / 20);
         noLoop();
     }
 
-    fill(255, 1, 1);
-    rect(food.x, food.y, 1, 1); //vẽ food
 
 }

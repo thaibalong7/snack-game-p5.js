@@ -44,7 +44,7 @@ class Snake {
     }
     show() {
         for (let i = 0; i < this.body.length; i++) {
-            fill(255, 0, 255)
+            fill(0, 153, 51)
             noStroke();
             rect(this.body[i].x, this.body[i].y, 1, 1)
         }
