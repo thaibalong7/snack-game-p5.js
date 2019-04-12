@@ -21,7 +21,7 @@ class Snake {
     checkEndGame() {
         let x = this.body[this.body.length - 1].x;
         let y = this.body[this.body.length - 1].y;
-        if (x > w - 1 || x < 0 || y > h - 1 || y < 0) {
+        if (x > w - 1 || x < 0 || y > h - 5 - 1 || y < 0) { //h - 5 vì mắc phần score board
             // nằm ngoài phạm vi chơi
             return true;
         }
@@ -41,6 +41,9 @@ class Snake {
             return true;
         }
         return false;
+    }
+    getScore() {
+        return this.body.length;
     }
     show() {
         for (let i = 0; i < this.body.length; i++) {

@@ -6,10 +6,11 @@ let w;
 let h;
 let direction = 'right';
 let isEndGame = false;
+let maxScore = 1;
 
 function setup() {
     // put setup code here
-    createCanvas(400, 400);
+    createCanvas(500, 450); // 500, 400 cho phần rắn chơi
     frameRate(fr); // Attempt to refresh at starting FPS
     w = floor(width / rez);
     h = floor(height / rez);
@@ -22,7 +23,7 @@ function setup() {
 
 function getFoodLocation() {
     let x = floor(random(w));
-    let y = floor(random(h));
+    let y = floor(random(h - 5));
     food = createVector(x, y);
 
 }
@@ -54,12 +55,14 @@ function keyPressed() {
         }
     }
     else if (key === ' ') {
-        console.log('Restart game')
-        if (isEndGame === true) {
+        if (isEndGame === true) { //game đã kết thúc thì mới restart được
+            console.log('Restart game')
             // rerender lại, restart trò chơi
             background(220);
+            direction = 'right'; //đặt lại direction
             snake = new Snake();
             loop();
+            isEndGame = false;
         }
     }
 }
@@ -75,6 +78,17 @@ function drawWords(x, y) {
     text('Press space to restart', x, y + 5);
 }
 
+function drawCore() {
+    fill(0)
+    rect(0, 40, 55, 5) //(0, 40)(550, 50) cho thanh điểm
+    fill(255, 255, 255);
+    textSize(2);
+    text('Score: ', 10, 42.5);
+    textSize(2);
+    text(snake.getScore(), 14, 42.5);
+    text('Max score: ', 33, 42.5);
+    text(maxScore, 39, 42.5);
+}
 function draw() {
     // put drawing code here
     scale(rez); //phóng to các lệnh rect lên rez lần
@@ -85,16 +99,16 @@ function draw() {
     }
     snake.update(); //update lại vị trí các cục của con rắn
     snake.show(); //show những update lên
-
+    drawCore();
     fill(255, 0, 255);
     rect(food.x, food.y, 1, 1); //vẽ food
     if (snake.checkEndGame()) {
+        if (snake.getScore() > maxScore) //check max điểm
+            maxScore = snake.getScore();
         isEndGame = true;
         console.log('END GAME');
         background(119, 136, 153);
         drawWords(width / 20, height / 20);
         noLoop();
     }
-
-
 }
